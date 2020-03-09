@@ -179,6 +179,12 @@ var controllerUI = (function (){
 
 	};
 
+	var nodeListForEach = function(list, callback){
+		for (var i = 0;	i < list.length; i++) {
+				callback(list[i], i);
+		}
+	};
+
 	return {
 		traerInput: function(){
 
@@ -258,12 +264,6 @@ var controllerUI = (function (){
 
 			var fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
 
-			var nodeListForEach = function(list, callback){
-				for (var i = 0;	i < list.length; i++) {
-						callback(list[i], i);
-				}
-			};
-
 			nodeListForEach(fields, function(current, index){
 				if (porcentajes[index] > 0){	
 					current.textContent	= porcentajes[index] + '%';
@@ -284,6 +284,17 @@ var controllerUI = (function (){
 			anio = now.getFullYear();
 
 			document.querySelector(DOMstrings.fechaLabel).textContent = meses[mes] + ' de ' + anio;
+		},
+
+		cambiarColor: function(){
+
+			var fields = document.querySelectorAll(DOMstrings.inputType + ', ' + DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+
+			nodeListForEach(fields, function(current){
+				current.classList.toggle('red-focus');
+			});
+
+			document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
 		},
 
 		getDOMstrings: function(){
@@ -311,6 +322,8 @@ var controllerGeneral = (function(ctrlBill, ctrlUI){
 		});
 
 		document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+		document.querySelector(DOM.inputType).addEventListener('change', ctrlUI.cambiarColor);
 	};
 
 	var actualizarBilletera = function(){
